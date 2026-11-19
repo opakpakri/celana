@@ -52,3 +52,6 @@ Desktop.ini
 # Agent Metadata & Local Skills
 .agents/
 skills-lock.json
+
+# Internal Specifications & Documentation
+spesifikasi_teknis_desain_aplikasi_celana_cellix_laundry_management.md
