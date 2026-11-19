@@ -2,7 +2,8 @@ import { get } from 'svelte/store';
 import { goto } from '$app/navigation';
 import { authStore } from './stores/authStore.js';
 
-const BASE_URL = '/api';
+const API_ORIGIN = (import.meta.env.VITE_API_URL || '').replace(/\/$/, '');
+const BASE_URL = API_ORIGIN ? (API_ORIGIN.endsWith('/api') ? API_ORIGIN : `${API_ORIGIN}/api`) : '/api';
 
 export async function apiFetch(path, options = {}) {
 	const { token } = get(authStore);

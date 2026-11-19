@@ -1,4 +1,4 @@
-# 🧺 Celana — Cellix Laundry Management System
+# Celana — Cellix Laundry Management System
 
 <p align="center">
   <img src="https://img.shields.io/badge/Go-1.22+-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go" />
@@ -14,65 +14,76 @@
 
 ---
 
-## 🌟 Fitur Utama
+## Fitur Utama
 
-### 1. 🏢 Arsitektur Multi-Tenant Terisolasi
+### 1. Arsitektur Multi-Tenant Terisolasi
+
 - **Row-Level Tenant Isolation**: Setiap tenant/pemilik laundry memiliki data yang terisolasi penuh via `user_id`.
 - **JWT Context Anti-Spoofing**: Autentikasi dan identitas tenant diekstrak langsung dari token JWT yang terverifikasi, bukan dari parameter request.
 - **Strict Cross-Tenant Validation**: Mencegah akses silang data antar-bisnis (mengembalikan `404 Not Found` alih-alih `403` untuk menjaga keamanan privasi data).
 
-### 2. 🧾 Manajemen Pesanan & Kasir Cepat
+### 2. Manajemen Pesanan & Kasir Cepat
+
 - **Multi-Item Layanan**: Mendukung kombinasi berbagai jenis layanan dalam satu nota (Per Kg, Per Satuan/Item, dan Per Meter Persegi / $m^2$).
 - **Dropdown Pencarian Cepat**: Pencarian instan untuk pelanggan dan item layanan dengan keyboard navigation.
 - **Sistem Pembayaran Fleksibel**: Dukungan pembayaran Tunai, Transfer Bank, QRIS, opsi Uang Muka (DP), pelunasan bertahap, serta kalkulator uang pas & kembalian otomatis.
-- **Status Siklus Pesanan**: Pelacakan status terstruktur (*QUEUE, PROCESS, READY, COMPLETED, CANCELLED*).
-- **Notifikasi WhatsApp Otomatis**: Integrasi pengiriman pesan struk/nota digital otomatis ke nomor WhatsApp pelanggan saat pesanan siap diambil (*READY*).
+- **Status Siklus Pesanan**: Pelacakan status terstruktur (_QUEUE, PROCESS, READY, COMPLETED, CANCELLED_).
+- **Notifikasi WhatsApp Otomatis**: Integrasi pengiriman pesan struk/nota digital otomatis ke nomor WhatsApp pelanggan saat pesanan siap diambil (_READY_).
 
-### 3. 👕 Katalog Layanan Dinamis
+### 3. Katalog Layanan Dinamis
+
 - Manajemen tarif laundry fleksibel dengan tipe satuan (`PER_KG`, `PER_ITEM`, `PER_M2`).
 - Fitur aktifkan/nonaktifkan layanan tanpa menghapus riwayat transaksi lama.
 - Statistik katalog dan ringkasan harga per satuan.
 
-### 4. 👥 Manajemen Pelanggan (CRM)
+### 4. Manajemen Pelanggan (CRM)
+
 - Pencatatan buku kontak pelanggan lengkap dengan alamat dan catatan preferensi laundry.
 - Pelacakan riwayat pesanan pelanggan dan status tagihan belum lunas.
 
-### 5. 💰 Arus Kas & Keuangan (Cash Flow)
+### 5. Arus Kas & Keuangan (Cash Flow)
+
 - Rekap otomatis pemasukan dari transaksi laundry (DP & Pelunasan).
 - Pencatatan pengeluaran operasional (deterjen, listrik, parfum, plastik packaging, dll).
 - Ringkasan kas real-time: Total Pemasukan, Total Pengeluaran, dan Saldo Bersih.
 
-### 6. 🎨 Pengalaman Pengguna (UI/UX) Unggulan
+### 6. Pengalaman Pengguna (UI/UX) Unggulan
+
 - **Responsive & Modern Design**: Dibangun dengan Tailwind CSS dengan layout adaptif untuk layar desktop maupun smartphone/tablet kasir.
-- **Dark Mode Support**: Pilihan tema Terang (*Light*), Gelap (*Dark*), dan Otomatis (*System*).
+- **Dark Mode Support**: Pilihan tema Terang (_Light_), Gelap (_Dark_), dan Otomatis (_System_).
 - **Interactive Product Tour**: Panduan interaktif terintegrasi menggunakan `driver.js` untuk memandu staf/kasir baru memahami fitur aplikasi langkah demi langkah.
-- **Zero-Flicker In-Memory Caching**: Navigasi antar-halaman instan tanpa jeda *loading* berulang.
+- **Zero-Flicker In-Memory Caching**: Navigasi antar-halaman instan tanpa jeda _loading_ berulang.
 
 ---
 
-## 🛠️ Tech Stack
+## Tech Stack
 
 ### Backend
+
 - **Bahasa**: [Go (Golang)](https://go.dev/) 1.22+
 - **Framework Web**: [Fiber v2](https://gofiber.io/) — Framework web performa tinggi berbasis Fasthttp
 - **Database Driver**: [pgx / lib/pq](https://github.com/lib/pq)
-- **Keamanan**: JWT (*golang-jwt*), Argon2 / Bcrypt Password Hashing, CORS Protection
+- **Keamanan**: JWT (_golang-jwt_), Argon2 / Bcrypt Password Hashing, CORS Protection
 
 ### Frontend
+
 - **Framework**: [SvelteKit](https://kit.svelte.dev/) + Vite
 - **Styling**: [Tailwind CSS](https://tailwindcss.com/)
 - **Icons**: [Lucide Svelte](https://lucide.dev/)
 - **Tour Guide**: [driver.js](https://driverjs.com/)
 
 ### Database
+
 - **DBMS**: [PostgreSQL](https://www.postgresql.org/) 15+
 
 ---
 
-## 🚀 Panduan Memulai (Getting Started)
+## Panduan Memulai (Getting Started)
 
 ### 1. Prasyarat
+
 Pastikan Anda telah menginstal:
+
 - [Go](https://go.dev/dl/) (versi 1.22 atau terbaru)
 - [Node.js](https://nodejs.org/) (versi 18 atau 20 LTS)
 - [PostgreSQL](https://www.postgresql.org/download/)
@@ -82,16 +93,19 @@ Pastikan Anda telah menginstal:
 ### 2. Konfigurasi Database & Backend
 
 1. Buka terminal dan masuk ke folder `backend`:
+
    ```bash
    cd backend
    ```
 
 2. Salin template file konfigurasi `.env`:
+
    ```bash
    cp .env.example .env
    ```
 
 3. Sesuaikan konfigurasi pada file `.env`:
+
    ```env
    PORT=8080
    DATABASE_URL=postgres://postgres:password_anda@localhost:5432/celana_db?sslmode=disable
@@ -100,6 +114,7 @@ Pastikan Anda telah menginstal:
    ```
 
 4. Jalankan migrasi database PostgreSQL:
+
    ```bash
    # Buat database jika belum ada
    psql -U postgres -c "CREATE DATABASE celana_db;"
@@ -113,18 +128,20 @@ Pastikan Anda telah menginstal:
    go mod tidy
    go run cmd/api/main.go
    ```
-   *Server backend akan berjalan di `http://localhost:8080`.*
+   _Server backend akan berjalan di `http://localhost:8080`._
 
 ---
 
 ### 3. Konfigurasi Frontend
 
 1. Buka terminal baru dan masuk ke folder `frontend`:
+
    ```bash
    cd frontend
    ```
 
 2. Pasang dependensi Node.js:
+
    ```bash
    npm install
    ```
@@ -133,11 +150,11 @@ Pastikan Anda telah menginstal:
    ```bash
    npm run dev
    ```
-   *Aplikasi frontend dapat diakses melalui browser di `http://localhost:5173`.*
+   _Aplikasi frontend dapat diakses melalui browser di `http://localhost:5173`._
 
 ---
 
-## 📁 Struktur Direktori
+## Struktur Direktori
 
 ```text
 celana/
@@ -184,7 +201,7 @@ celana/
 
 ---
 
-## 📄 Lisensi
+## Lisensi
 
 Proyek ini dilisensikan di bawah [MIT License](LICENSE).
 Dikembangkan untuk mendukung digitalisasi dan efisiensi operasional UMKM Laundry.
