@@ -56,7 +56,7 @@
 			</div>
 			<div class="min-w-0">
 				<span class="block text-base font-extrabold tracking-tight text-white">Celana</span>
-				<span class="block truncate text-[10px] font-medium text-sky-100">Cellix Laundry</span>
+				<span class="block truncate text-[10px] font-medium text-sky-100">Cellix Laundry Management</span>
 			</div>
 		</a>
 	</div>
