@@ -179,8 +179,14 @@
 							<label for="set-phone" class="block text-sm font-semibold text-[#0F172A]">Nomor WhatsApp Toko</label>
 							<input
 								id="set-phone"
-								type="text"
-								bind:value={form.phone}
+								type="tel"
+								inputmode="numeric"
+								value={form.phone}
+								on:input={(e) => {
+									const val = e.target.value.replace(/\D/g, '');
+									form.phone = val;
+									e.target.value = val;
+								}}
 								placeholder="081234567890"
 								class="mt-1.5 w-full rounded-xl border border-[#E2E8F0] px-3.5 py-2.5 text-sm outline-none focus:border-[#0284C7] focus:ring-2 focus:ring-[#E0F2FE]"
 							/>

@@ -294,8 +294,14 @@
 				<label for="u-phone" class="block text-sm font-semibold text-[#0F172A]">No. WhatsApp</label>
 				<input
 					id="u-phone"
-					type="text"
-					bind:value={form.phone}
+					type="tel"
+					inputmode="numeric"
+					value={form.phone}
+					on:input={(e) => {
+						const val = e.target.value.replace(/\D/g, '');
+						form.phone = val;
+						e.target.value = val;
+					}}
 					placeholder="No Telp User"
 					class="mt-1.5 w-full rounded-xl border border-[#E2E8F0] px-3.5 py-2.5 text-sm outline-none focus:border-[#0284C7]"
 				/>

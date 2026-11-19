@@ -573,8 +573,14 @@
 							class="rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm outline-none focus:border-[#0284C7]"
 						/>
 						<input
-							type="text"
-							bind:value={quickCustomer.phone}
+							type="tel"
+							inputmode="numeric"
+							value={quickCustomer.phone}
+							on:input={(e) => {
+								const val = e.target.value.replace(/\D/g, '');
+								quickCustomer.phone = val;
+								e.target.value = val;
+							}}
 							placeholder="No. Telepon"
 							class="rounded-lg border border-[#E2E8F0] bg-white px-3 py-2 text-sm outline-none focus:border-[#0284C7]"
 						/>
