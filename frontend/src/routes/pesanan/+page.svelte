@@ -49,31 +49,32 @@
 
 	function parseOrderItems(order) {
 		if (order.services_summary && order.qty_summary) {
-			return {
-				services: order.services_summary,
-				qty: order.qty_summary
-			};
+			const sList = order.services_summary.split(', ').filter(Boolean);
+			const qList = order.qty_summary.split(', ').filter(Boolean);
+			const list = [];
+			const maxLen = Math.max(sList.length, qList.length);
+			for (let i = 0; i < maxLen; i++) {
+				list.push({
+					service: sList[i] || '-',
+					qty: qList[i] || '-'
+				});
+			}
+			return list.length > 0 ? list : [{ service: '-', qty: '-' }];
 		}
 		if (!order.items_summary) {
-			return { services: '-', qty: '-' };
+			return [{ service: '-', qty: '-' }];
 		}
 		const parts = order.items_summary.split(', ');
-		const services = [];
-		const qtys = [];
+		const list = [];
 		for (const part of parts) {
 			const match = part.match(/^(.*?)\s*\(([^)]+)\)$/);
 			if (match) {
-				services.push(match[1]);
-				qtys.push(match[2]);
-			} else {
-				services.push(part);
-				qtys.push('-');
+				list.push({ service: match[1], qty: match[2] });
+			} else if (part.trim()) {
+				list.push({ service: part.trim(), qty: '-' });
 			}
 		}
-		return {
-			services: services.join(', ') || '-',
-			qty: qtys.join(', ') || '-'
-		};
+		return list.length > 0 ? list : [{ service: '-', qty: '-' }];
 	}
 
 	// Create order modal state
@@ -538,13 +539,29 @@
 						<tr><td colspan="9" class="px-3 py-6 text-center text-[#64748B]">Tidak ada pesanan ditemukan.</td></tr>
 					{:else}
 						{#each paginatedOrders as o}
-							{@const parsed = parseOrderItems(o)}
-							<tr class="hover:bg-slate-50/70">
+							{@const items = parseOrderItems(o)}
+							<tr class="hover:bg-slate-50/70 align-top">
 								<td class="whitespace-nowrap px-3 py-2.5 font-bold text-[#0F172A]">{o.order_code}</td>
 								<td class="whitespace-nowrap px-3 py-2.5 text-[#64748B]">{formatDate(o.created_at)}</td>
 								<td class="whitespace-nowrap px-3 py-2.5 font-semibold text-[#0F172A]">{o.customer_name}</td>
-								<td class="max-w-[180px] truncate px-3 py-2.5 text-[#0F172A]" title={parsed.services}>{parsed.services}</td>
-								<td class="whitespace-nowrap px-3 py-2.5 font-medium text-[#0284C7]">{parsed.qty}</td>
+								<td class="px-3 py-2.5 text-[#0F172A]">
+									<div class="flex flex-col gap-1">
+										{#each items as it}
+											<span class="max-w-[200px] truncate font-medium text-[#0F172A]" title={it.service}>
+												{it.service}
+											</span>
+										{/each}
+									</div>
+								</td>
+								<td class="whitespace-nowrap px-3 py-2.5 text-[#0F172A]">
+									<div class="flex flex-col gap-1">
+										{#each items as it}
+											<span class="font-medium text-[#0F172A]">
+												{it.qty}
+											</span>
+										{/each}
+									</div>
+								</td>
 								<td class="whitespace-nowrap px-3 py-2.5">
 									<Badge variant={statusVariant(o.status)}>{orderStatusLabel(o.status)}</Badge>
 								</td>
