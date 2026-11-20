@@ -101,9 +101,11 @@ type Order struct {
 	PaymentStatus string      `json:"payment_status"`
 	TotalAmount   float64     `json:"total_amount"`
 	PaidAmount    float64     `json:"paid_amount"`
-	Notes         string      `json:"notes"`
-	ItemsSummary  string      `json:"items_summary,omitempty"`
-	Items         []OrderItem `json:"items,omitempty"`
+	Notes           string      `json:"notes"`
+	ItemsSummary    string      `json:"items_summary,omitempty"`
+	ServicesSummary string      `json:"services_summary,omitempty"`
+	QtySummary      string      `json:"qty_summary,omitempty"`
+	Items           []OrderItem `json:"items,omitempty"`
 	CreatedAt     time.Time   `json:"created_at"`
 	UpdatedAt     time.Time   `json:"updated_at"`
 }

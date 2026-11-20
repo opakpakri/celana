@@ -47,6 +47,35 @@
 
 	$: paginatedOrders = orders.slice((currentPage - 1) * pageSize, currentPage * pageSize);
 
+	function parseOrderItems(order) {
+		if (order.services_summary && order.qty_summary) {
+			return {
+				services: order.services_summary,
+				qty: order.qty_summary
+			};
+		}
+		if (!order.items_summary) {
+			return { services: '-', qty: '-' };
+		}
+		const parts = order.items_summary.split(', ');
+		const services = [];
+		const qtys = [];
+		for (const part of parts) {
+			const match = part.match(/^(.*?)\s*\(([^)]+)\)$/);
+			if (match) {
+				services.push(match[1]);
+				qtys.push(match[2]);
+			} else {
+				services.push(part);
+				qtys.push('-');
+			}
+		}
+		return {
+			services: services.join(', ') || '-',
+			qty: qtys.join(', ') || '-'
+		};
+	}
+
 	// Create order modal state
 	let createModalOpen = false;
 	let customers = [];
@@ -497,6 +526,7 @@
 						<th class="px-3 py-2.5">Tanggal</th>
 						<th class="px-3 py-2.5">Pelanggan</th>
 						<th class="px-3 py-2.5">Layanan</th>
+						<th class="px-3 py-2.5">Qty</th>
 						<th class="px-3 py-2.5">Status Cucian</th>
 						<th class="px-3 py-2.5">Status Pembayaran</th>
 						<th class="px-3 py-2.5">Total</th>
@@ -505,14 +535,16 @@
 				</thead>
 				<tbody class="divide-y divide-[#E2E8F0]">
 					{#if orders.length === 0}
-						<tr><td colspan="8" class="px-3 py-6 text-center text-[#64748B]">Tidak ada pesanan ditemukan.</td></tr>
+						<tr><td colspan="9" class="px-3 py-6 text-center text-[#64748B]">Tidak ada pesanan ditemukan.</td></tr>
 					{:else}
 						{#each paginatedOrders as o}
+							{@const parsed = parseOrderItems(o)}
 							<tr class="hover:bg-slate-50/70">
 								<td class="whitespace-nowrap px-3 py-2.5 font-bold text-[#0F172A]">{o.order_code}</td>
 								<td class="whitespace-nowrap px-3 py-2.5 text-[#64748B]">{formatDate(o.created_at)}</td>
 								<td class="whitespace-nowrap px-3 py-2.5 font-semibold text-[#0F172A]">{o.customer_name}</td>
-								<td class="max-w-[180px] truncate px-3 py-2.5 text-[#64748B]">{o.items_summary || '-'}</td>
+								<td class="max-w-[180px] truncate px-3 py-2.5 text-[#0F172A]" title={parsed.services}>{parsed.services}</td>
+								<td class="whitespace-nowrap px-3 py-2.5 font-medium text-[#0284C7]">{parsed.qty}</td>
 								<td class="whitespace-nowrap px-3 py-2.5">
 									<Badge variant={statusVariant(o.status)}>{orderStatusLabel(o.status)}</Badge>
 								</td>

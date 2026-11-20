@@ -46,6 +46,8 @@ func (h *OrderHandler) List(c *fiber.Ctx) error {
 		SELECT o.id, o.user_id, o.order_code, o.customer_id, c.name, c.phone,
 		       o.status, o.payment_status, o.total_amount, o.paid_amount, COALESCE(o.notes, ''),
 		       COALESCE(STRING_AGG(s.name || ' (' || oi.quantity || ')', ', '), '') AS items_summary,
+		       COALESCE(STRING_AGG(s.name, ', ' ORDER BY oi.id), '') AS services_summary,
+		       COALESCE(STRING_AGG(oi.quantity || CASE s.unit_type WHEN 'PER_KG' THEN ' Kg' WHEN 'PER_M2' THEN ' m²' ELSE ' Item' END, ', ' ORDER BY oi.id), '') AS qty_summary,
 		       o.created_at, o.updated_at
 		FROM orders o
 		JOIN customers c ON c.id = o.customer_id AND c.user_id = o.user_id
@@ -81,7 +83,7 @@ func (h *OrderHandler) List(c *fiber.Ctx) error {
 		if err := rows.Scan(
 			&o.ID, &o.UserID, &o.OrderCode, &o.CustomerID, &o.CustomerName, &o.CustomerPhone,
 			&o.Status, &o.PaymentStatus, &o.TotalAmount, &o.PaidAmount, &o.Notes,
-			&o.ItemsSummary, &o.CreatedAt, &o.UpdatedAt,
+			&o.ItemsSummary, &o.ServicesSummary, &o.QtySummary, &o.CreatedAt, &o.UpdatedAt,
 		); err != nil {
 			return c.Status(fiber.StatusInternalServerError).JSON(fiber.Map{"error": "Gagal membaca data pesanan"})
 		}
